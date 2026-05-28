@@ -1,5 +1,5 @@
 -- جلب الساروت من GitHub كـ نص (String)
-local CorrectKey = game:HttpGet("https://raw.githubusercontent.com/hamzanouader8-boop/war/refs/heads/main/keyv2.txt")
+local CorrectKey = game:HttpGet("https://raw.githubusercontent.com/hamzanouader8-boop/key/refs/heads/main/keyv2.txt")
 
 -- تنظيف النص من أي فراغات زايدة
 CorrectKey = CorrectKey:gsub("%s+", "")
@@ -498,6 +498,66 @@ HacksTab:CreateSlider({
    CurrentValue = 0.7,
    Callback = function(v) _G.HitboxTransparency = v end
 })
+-- ضيف هاد الكود **بعد** Rayfield Window creation (بعد سطر Window:CreateWindow)
+
+-- ====================== NIK & BLOWJOB ======================
+local nik_enabled = false
+local bj_enabled = false
+local target_player = nil
+
+-- Tab Fun (أو ضيفه في HacksTab)
+local FunTab = Window:CreateTab("🔥 Fun")
+
+FunTab:CreateToggle({
+   Name = "Nik (Click Enemy)",
+   CurrentValue = false,
+   Callback = function(Value)
+      nik_enabled = Value
+      if not Value then target_player = nil end
+      Rayfield:Notify({Title = "Nik", Content = Value and "ON - Click on Enemy" or "OFF", Duration = 2})
+   end
+})
+
+FunTab:CreateToggle({
+   Name = "Blowjob (Click Enemy)",
+   CurrentValue = false,
+   Callback = function(Value)
+      bj_enabled = Value
+      if not Value then target_player = nil end
+      Rayfield:Notify({Title = "Blowjob", Content = Value and "ON - Click on Enemy" or "OFF", Duration = 2})
+   end
+})
+
+-- Mouse Click to Select Target
+LocalPlayer:GetMouse().Button1Down:Connect(function()
+   if (nik_enabled or bj_enabled) then
+      local mouse = LocalPlayer:GetMouse()
+      if mouse.Target then
+         local character = mouse.Target.Parent
+         local plr = Players:GetPlayerFromCharacter(character)
+         if plr and plr ~= LocalPlayer then
+            target_player = plr
+            Rayfield:Notify({Title = "Target Selected", Content = plr.Name, Duration = 2})
+         end
+      end
+   end
+end)
+
+-- Nik & BJ Logic Loop
+RunService.Heartbeat:Connect(function()
+   if target_player and target_player.Character and target_player.Character:FindFirstChild("HumanoidRootPart") 
+      and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+      
+      local myRoot = LocalPlayer.Character.HumanoidRootPart
+      local enemyRoot = target_player.Character.HumanoidRootPart
+
+      if nik_enabled then
+         myRoot.CFrame = enemyRoot.CFrame * CFrame.new(0, 0, 1.2)  -- Behind
+      elseif bj_enabled then
+         myRoot.CFrame = enemyRoot.CFrame * CFrame.new(0, -0.6, -1.0) * CFrame.Angles(math.rad(-10), math.rad(180), 0)
+      end
+   end
+end)
 local SettingsTab = Window:CreateTab("⚙ Settings")
 SettingsTab:CreateToggle({Name="Team/Faction Check",CurrentValue=true,Callback=function(v) getgenv().TeamCheck=v end})
 SettingsTab:CreateParagraph({Title="Keys",Content="LeftShift: Speed On/Off | E: Fly On/Off"})
