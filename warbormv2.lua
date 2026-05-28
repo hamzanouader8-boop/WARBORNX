@@ -1,5 +1,5 @@
 -- جلب الساروت من GitHub كـ نص (String)
-local CorrectKey = game:HttpGet("https://raw.githubusercontent.com/hamzanouader8-boop/key/refs/heads/main/keyv2.txt")
+local CorrectKey = game:HttpGet("https://raw.githubusercontent.com/hamzanouader8-boop/war/refs/heads/main/keyv2.txt")
 
 -- تنظيف النص من أي فراغات زايدة
 CorrectKey = CorrectKey:gsub("%s+", "")
